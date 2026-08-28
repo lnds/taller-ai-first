@@ -1,0 +1,28 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # Las versiones de uv y de Python salen de .tool-versions.
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          version: "0.9.5"
+          python-version: "3.13.5"
+          enable-cache: true
+
+      # --locked falla si uv.lock quedó desfasado del pyproject.toml.
+      # El grupo dev se instala por defecto y es el que trae pytest.
+      - name: Instalar dependencias
+        run: uv sync --locked
+
+      - name: Correr la suite
+        run: uv run pytest
