@@ -14,15 +14,3 @@ uv run python -m carrito total --pedido 42
    fijo. El orden importa cuando hay más de uno.
 3. **IVA** — 19% sobre el monto ya descontado.
 4. **Envío** — según la región, gratis sobre los $50.000.
-
-## Reportes
-
-Para sacar el resumen en CSV se usa `carrito.exportar.a_csv()`, que es lo que
-consume el sistema de reportes.
-
-## Próximos pasos
-
-- Los pedidos se van a mover de `datos/ejemplo.json` a **Postgres**; el módulo
-  `carrito.datos` va a hablar con la base a través de SQLAlchemy.
-- La **API REST** reemplaza al CLI. El CLI queda como herramienta de depuración.
-- El catálogo de productos pasa a un servicio aparte y se consulta por HTTP.
