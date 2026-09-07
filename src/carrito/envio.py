@@ -1,7 +1,8 @@
 """Costo de envío según la región de destino.
 
-Sobre cierto monto el envío no se cobra. El umbral se compara contra el monto
-que el cliente efectivamente paga por los productos.
+Sobre cierto monto el envío no se cobra. El umbral se compara contra el
+subtotal del pedido con IVA incluido, antes de aplicar cupones o
+promociones.
 """
 
 TRAMOS = {
@@ -18,9 +19,9 @@ def free_shipping_for_new_customer(order) -> bool:
     return order.cliente_nuevo
 
 
-def costo_envio(pedido, monto: int) -> int:
+def costo_envio(pedido, monto_bruto_con_iva: int) -> int:
     if free_shipping_for_new_customer(pedido):
         return 0
-    if monto >= UMBRAL_ENVIO_GRATIS:
+    if monto_bruto_con_iva >= UMBRAL_ENVIO_GRATIS:
         return 0
     return TRAMOS.get(pedido.region, TRAMOS["regiones"])
