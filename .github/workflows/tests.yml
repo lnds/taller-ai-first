@@ -26,3 +26,24 @@ jobs:
 
       - name: Correr la suite
         run: uv run pytest
+
+  calidad:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          version: "0.9.5"
+          python-version: "3.13.5"
+          enable-cache: true
+
+      # Mismos controles que .claude/skills/prepara-pr/gates.sh, con versiones fijas
+      # para que el resultado no cambie cuando salga una versión nueva.
+      - name: ruff
+        run: uvx ruff@0.16.7 check src/ tests/
+
+      - name: bandit (severidad media/alta)
+        run: uvx bandit@1.9.4 -r src/ --severity-level medium
